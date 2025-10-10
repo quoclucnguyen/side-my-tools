@@ -7,12 +7,23 @@ import App from './App.tsx'
 import DashboardPage from './pages/Dashboard.tsx'
 import SettingsPage from './pages/Settings.tsx'
 import InventoryPage from './pages/Inventory/Inventory.tsx'
-
+import LoginPage from './pages/auth/Login.tsx'
+import AuthGuard from './components/AuthGuard.tsx'
 
 const router = createBrowserRouter([
+  // Public routes
+  {
+    path: '/login',
+    element: <LoginPage />,
+  },
+  // Protected routes
   {
     path: '/',
-    element: <App />,
+    element: (
+      <AuthGuard>
+        <App />
+      </AuthGuard>
+    ),
     children: [
       { index: true, element: <DashboardPage /> },
       { path: 'inventory', element: <InventoryPage /> },

@@ -3,9 +3,20 @@ import {
   LayoutDashboard,
   Settings,
   UtensilsCrossed,
+  LogOut,
+  User,
   type LucideIcon,
 } from 'lucide-react'
-import { NavLink, Outlet, useLocation } from 'react-router'
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router'
+import { useAuthStore } from '@/stores/auth.store'
+import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
 type NavItem = {
   to: string
@@ -21,6 +32,8 @@ const navItems: NavItem[] = [
 
 function App() {
   const location = useLocation()
+  const navigate = useNavigate()
+  const { user, signOut, loading } = useAuthStore()
 
   const activeTitle =
     navItems.find((item) =>
@@ -37,10 +50,44 @@ function App() {
         : 'text-muted-foreground hover:text-foreground',
     ].join(' ')
 
+  const handleSignOut = async () => {
+    try {
+      await signOut()
+      navigate('/login', { replace: true })
+    } catch (error) {
+      console.error('Logout error:', error)
+    }
+  }
+
   return (
     <div className='mx-auto flex min-h-screen w-full max-w-md flex-col bg-background text-foreground'>
       <header className='sticky top-0 z-10 border-b border-border bg-card/70 px-4 py-3 backdrop-blur'>
-        <h5 className='text-lg font-semibold'>{activeTitle}</h5>
+        <div className='flex items-center justify-between'>
+          <h5 className='text-lg font-semibold'>{activeTitle}</h5>
+          {user && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant='ghost' size='sm' className='h-8 w-8 rounded-full'>
+                  <User className='h-4 w-4' />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align='end' className='w-48'>
+                <DropdownMenuItem disabled className='text-xs text-muted-foreground'>
+                  {user.email}
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={handleSignOut}
+                  disabled={loading}
+                  className='text-destructive focus:text-destructive'
+                >
+                  <LogOut className='mr-2 h-4 w-4' />
+                  Đăng xuất
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+        </div>
       </header>
 
       <main className='flex-1 overflow-y-auto px-4 py-6'>
