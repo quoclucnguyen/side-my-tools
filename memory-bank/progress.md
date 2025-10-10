@@ -10,11 +10,13 @@ _Chronological timeline of major milestones. Update after meaningful changes._
 - **2025-02-17** — Renamed navigation to Dashboard/Inventory/Settings, added lucide icons, and integrated Supabase client + inventory sync fallback flow.
 - **2025-02-17** — Brought in shadcn/ui primitives (Card, Badge, Alert) and refactored dashboard + inventory screens to use shared components.
 - **2025-10-10** — Integrated Zustand store for authentication state management with Supabase auth (signIn/signUp/signOut), added AuthGuard component for route protection, created login/signup page with shadcn UI components, and implemented logout functionality in header dropdown.
+- **2025-10-10** — Added Gemini API key configuration to Settings page using TanStack React Query for data management, created user_settings table integration, auto-loading of settings from database, optimistic updates for better UX, and implemented model selection dropdown with preferences stored in settings.gemini json.
 
 ## In Flight
 
 - Seed Supabase tables and replace placeholder stats with live data across dashboard + inventory.
 - Test login/logout flow with actual Supabase instance.
+- Test Gemini API key save/load functionality with real database.
 - Expand navigation as new features are defined.
 - Keep Memory Bank synchronized after each development session.
 
@@ -23,3 +25,4 @@ _Chronological timeline of major milestones. Update after meaningful changes._
 - Integrate shadcn component registry for standardized UI pieces.
 - Add localization strategy if bilingual support is required.
 - Consider adding social login options (Google, GitHub) to registration flow.
+- Use the newly configured Gemini API for AI-powered features (recipe suggestions, inventory insights).

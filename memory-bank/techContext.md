@@ -50,3 +50,17 @@
 Indexes:
 - `idx_food_items_expiration` on `(expiration_date)`
 - `idx_food_items_user_id` on `(user_id)`
+
+### `public.user_settings`
+
+| Column           | Type         | Constraints / Notes                                      |
+| ---------------- | ------------ | -------------------------------------------------------- |
+| `id`             | `uuid`       | Primary key, defaults to `gen_random_uuid()`            |
+| `user_id`        | `uuid`       | FK → `auth.users(id)`, unique, cascade delete           |
+| `preferences`    | `jsonb`      | Defaults to `{}`                                         |
+| `gemini_api_key` | `text`       | Optional user's Gemini API key                           |
+| `created_at`     | `timestamptz`| Defaults to `now()`                                      |
+| `updated_at`     | `timestamptz`| Defaults to `now()`                                      |
+
+Indexes:
+- `idx_user_settings_user_id` on `(user_id)`
