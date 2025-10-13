@@ -22,6 +22,7 @@ _Last updated: 2025-10-13 by Codex (GPT-5)._
 - Updated global styles (`src/index.css`) to remove centered body flex layout and support full-height mobile rendering.
 - Documented project goals, product context, and progress via new memory-bank markdown files.
 - Simplified the Docusaurus docs package to a single `home` page and removed the starter blog/sidebar content so the docs folder is a clean mockup.
+- Extended SRS REQ-005 to capture the AI-assisted "Tạo thực phẩm mới" flow and associated validation rules.
 
 ## Next Steps
 

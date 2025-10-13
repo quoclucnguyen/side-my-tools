@@ -13,7 +13,32 @@ import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
  Create as many sidebars as you want.
  */
 const sidebars: SidebarsConfig = {
-  tutorialSidebar: ['home'],
+  // Main sidebar for project documentation
+  tutorialSidebar: [
+    'home',
+    {
+      type: 'category',
+      label: '📋 Software Requirements Specification (SRS)',
+      items: [
+        'srs/introduction',
+        'srs/overall-description',
+        'srs/functional-requirements',
+        'srs/non-functional-requirements',
+        'srs/interface-requirements',
+        'srs/appendices',
+      ],
+    },
+    {
+      type: 'category',
+      label: '🎨 Wireframes & Design',
+      items: [
+        'wireframes/overview',
+        'wireframes/screens',
+        'wireframes/components',
+      ],
+    },
+
+  ],
 };
 
 export default sidebars;
