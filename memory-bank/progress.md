@@ -11,6 +11,7 @@ _Chronological timeline of major milestones. Update after meaningful changes._
 - **2025-02-17** — Brought in shadcn/ui primitives (Card, Badge, Alert) and refactored dashboard + inventory screens to use shared components.
 - **2025-10-10** — Integrated Zustand store for authentication state management with Supabase auth (signIn/signUp/signOut), added AuthGuard component for route protection, created login/signup page with shadcn UI components, and implemented logout functionality in header dropdown.
 - **2025-10-10** — Added Gemini API key configuration to Settings page using TanStack React Query for data management, created user_settings table integration, auto-loading of settings from database, optimistic updates for better UX, and implemented model selection dropdown with preferences stored in settings.gemini json.
+- **2025-10-13** — Replaced the Docusaurus starter content with a single Home doc page and removed blog/tutorial scaffolding to provide a clean docs mockup.
 
 ## In Flight
 

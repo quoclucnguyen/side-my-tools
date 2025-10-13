@@ -1,6 +1,6 @@
 # Active Context
 
-_Last updated: 2025-02-17 by Codex (GPT-5)._
+_Last updated: 2025-10-13 by Codex (GPT-5)._
 
 ## Current Focus
 
@@ -21,6 +21,7 @@ _Last updated: 2025-02-17 by Codex (GPT-5)._
 - Added initial page stubs (`DashboardPage`, `InventoryPage`, `SettingsPage`) using Tailwind utilities and copy in Vietnamese.
 - Updated global styles (`src/index.css`) to remove centered body flex layout and support full-height mobile rendering.
 - Documented project goals, product context, and progress via new memory-bank markdown files.
+- Simplified the Docusaurus docs package to a single `home` page and removed the starter blog/sidebar content so the docs folder is a clean mockup.
 
 ## Next Steps
 
