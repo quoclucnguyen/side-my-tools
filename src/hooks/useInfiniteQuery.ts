@@ -101,7 +101,14 @@ function createStore<TData = Record<string, any>>(
   }
 
   const initialize = async () => {
-    setState({ isLoading: true, isSuccess: false, data: [], error: null })
+    setState({
+      isLoading: true,
+      isSuccess: false,
+      data: [],
+      error: null,
+      count: 0,
+      hasInitialFetch: false,
+    })
     await fetchNextPage()
     setState({ isLoading: false, hasInitialFetch: true })
   }
@@ -158,5 +165,6 @@ export function useInfiniteQuery<TData = Record<string, any>>(
     error: state.error,
     hasMore: state.count === 0 ? true : state.count > state.data.length,
     fetchNextPage: store.fetchNextPage,
+    refetch: store.initialize,
   }
 }

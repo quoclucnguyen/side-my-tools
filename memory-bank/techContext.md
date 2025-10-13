@@ -6,6 +6,7 @@
 - **Routing**: `react-router` v7 (`RouterProvider` from `react-router/dom`).
 - **Styling**: Tailwind CSS 4.1 w/ inline theme tokens in `src/index.css`; tw-animate for extra animations; shadcn-style tokens but components not yet imported.
 - **Icons**: `lucide-react` available for future use.
+- **Media processing**: `pica` (client-side) resizes inventory images before upload.
 
 ## Development
 
@@ -29,6 +30,7 @@
 - Tailwind v4 removes traditional config; keep tokens in `index.css` and rely on `@tailwindcss/vite`.
 - ESLint config at `eslint.config.js` uses flat config; follow repo style (2-space indent, single quotes).
 - Vite config uses React plugin w/ React compiler—ensure new TSX features remain compatible.
+- Environment variables: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_SUPABASE_PUBLISHABLE_OR_ANON_KEY` (unused placeholder), and `VITE_SUPABASE_FOOD_BUCKET` (defaults to `food-images` bucket for storage uploads). Ensure the corresponding bucket is public/readable.
 
 ## Database Schema
 

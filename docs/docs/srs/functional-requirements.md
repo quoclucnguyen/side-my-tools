@@ -111,7 +111,7 @@
 - Date picker cho hạn sử dụng
 - Nút "Dùng AI" (khi đã cấu hình API key) cho phép mô tả bằng ngôn ngữ tự nhiên
 - Tự động điền các trường dựa trên đề xuất AI và cho phép chỉnh sửa trước khi lưu
-- Tùy chọn thêm hình ảnh (tương lai)
+- Tùy chọn thêm hình ảnh với tự động resize trước khi upload
 - Auto-save draft (tương lai)
 
 **Use Case: Tạo thực phẩm mới**

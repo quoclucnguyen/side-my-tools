@@ -13,6 +13,8 @@ _Chronological timeline of major milestones. Update after meaningful changes._
 - **2025-10-10** — Added Gemini API key configuration to Settings page using TanStack React Query for data management, created user_settings table integration, auto-loading of settings from database, optimistic updates for better UX, and implemented model selection dropdown with preferences stored in settings.gemini json.
 - **2025-10-13** — Replaced the Docusaurus starter content with a single Home doc page and removed blog/tutorial scaffolding to provide a clean docs mockup.
 - **2025-10-13** — Documented the AI-assisted flow for creating new food items in SRS REQ-005, including validation requirements.
+- **2025-10-13** — Shipped manual "Tạo mới thực phẩm" drawer (non-AI) with Zod validation, Supabase insert, and inventory refetch support.
+- **2025-10-14** — Added optional image upload to the create-food drawer with client-side resize via pica, Supabase storage integration, and updated SRS documentation.
 
 ## In Flight
 

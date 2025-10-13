@@ -10,6 +10,7 @@ import { InventoryItemCard } from './components/InventoryItemCard'
 import { EmptyInventoryAlert } from './components/EmptyInventoryAlert'
 import { LoadMoreButton } from './components/LoadMoreButton'
 import { FallbackDataAlert } from './components/FallbackDataAlert'
+import { CreateFoodDrawer } from './components/CreateFoodDrawer'
 
 export default function InventoryPage() {
   const orderByExpiration = useCallback<SupabaseQueryHandler>(
@@ -24,6 +25,7 @@ export default function InventoryPage() {
     error,
     fetchNextPage,
     hasMore,
+    refetch,
   } = useInfiniteQuery<FoodItemRow>({
     tableName: 'food_items',
     columns: 'id, name, quantity, unit, expiration_date, category, image_url',
@@ -49,7 +51,10 @@ export default function InventoryPage() {
 
 
   return (
-    <section className='space-y-1'>
+    <section className='space-y-4'>
+      <div className='flex justify-end'>
+        <CreateFoodDrawer onCreated={refetch} />
+      </div>
       {items.length === 0 ? (
         <EmptyInventoryAlert />
       ) : (
