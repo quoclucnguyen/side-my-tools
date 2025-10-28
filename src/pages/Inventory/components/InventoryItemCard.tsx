@@ -1,6 +1,9 @@
 import { useState } from 'react'
+import { Trash2 } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { useDeleteFoodItem } from '../hooks/useDeleteFoodItem'
 
 import type { FoodItem } from '../types'
 import { formatExpiration, getExpirationVariant } from '../utils'
@@ -8,10 +11,26 @@ import { InventoryItemDrawer } from './InventoryItemDrawer'
 
 interface InventoryItemCardProps {
   item: FoodItem
+  onDeleted?: () => void
 }
 
-export function InventoryItemCard({ item }: Readonly<InventoryItemCardProps>) {
+export function InventoryItemCard({ item, onDeleted }: Readonly<InventoryItemCardProps>) {
   const [drawerOpen, setDrawerOpen] = useState(false)
+
+  const { mutate: deleteFoodItem, isPending: isDeleting } = useDeleteFoodItem({
+    onSuccess: onDeleted,
+    onError: () => alert('Không thể xóa thực phẩm. Vui lòng thử lại.'),
+  })
+
+  const handleDelete = () => {
+    if (item.id.startsWith('temp-')) return
+
+    if (!confirm(`Bạn có chắc chắn muốn xóa "${item.name}"?`)) {
+      return
+    }
+
+    deleteFoodItem(Number(item.id))
+  }
 
   return (
     <>
@@ -41,9 +60,22 @@ export function InventoryItemCard({ item }: Readonly<InventoryItemCardProps>) {
 
           {/* Product info on the right - 2 lines */}
           <div className='flex-1 min-w-0 space-y-1'>
-            {/* Line 1: Product name and quantity */}
+            {/* Line 1: Product name and delete button */}
             <div className='flex items-center justify-between'>
               <div className='font-medium text-sm truncate'>{item.name}</div>
+              <Button
+                type='button'
+                variant='ghost'
+                size='sm'
+                onClick={(event) => {
+                  event.stopPropagation()
+                  void handleDelete()
+                }}
+                disabled={isDeleting}
+                className='h-7 w-7 p-0 text-destructive hover:bg-destructive/10'
+              >
+                <Trash2 className='h-4 w-4' />
+              </Button>
             </div>
 
             {/* Line 2: Badges */}

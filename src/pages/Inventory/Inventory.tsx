@@ -60,7 +60,7 @@ export default function InventoryPage() {
       ) : (
         <div className='space-y-2'>
           {items.map((item) => (
-            <InventoryItemCard key={item.id} item={item} />
+            <InventoryItemCard key={item.id} item={item} onDeleted={refetch} />
           ))}
           <LoadMoreButton
             isFetching={isFetching}
