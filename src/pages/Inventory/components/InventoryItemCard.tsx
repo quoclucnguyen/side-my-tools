@@ -69,7 +69,7 @@ export function InventoryItemCard({ item, onDeleted }: Readonly<InventoryItemCar
                 size='sm'
                 onClick={(event) => {
                   event.stopPropagation()
-                  void handleDelete()
+                  handleDelete()
                 }}
                 disabled={isDeleting}
                 className='h-7 w-7 p-0 text-destructive hover:bg-destructive/10'
