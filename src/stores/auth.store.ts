@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import type { User, AuthError } from '@supabase/supabase-js'
 import { getSupabaseClient } from '@/lib/supabaseClient'
+import { getInitDataRaw, exchangeTma } from '@/lib/tma'
 
 interface AuthState {
   user: User | null
@@ -12,6 +13,7 @@ interface AuthActions {
   signIn: (email: string, password: string) => Promise<void>
   signUp: (email: string, password: string) => Promise<void>
   signOut: () => Promise<void>
+  tmaLogin: () => Promise<void>
   checkAuth: () => Promise<void>
   clearError: () => void
 }
@@ -96,13 +98,68 @@ export const useAuthStore = create<AuthStore>((set) => {
       }
     },
 
+    // Đăng nhập qua Telegram Mini App: trao đổi initDataRaw lấy Supabase session
+    tmaLogin: async () => {
+      try {
+        const initDataRaw = getInitDataRaw()
+        if (!initDataRaw) return
+        set({ loading: true, error: null })
+        const { access_token, refresh_token } = await exchangeTma(initDataRaw)
+        const { error } = await supabase.auth.setSession({ access_token, refresh_token })
+        if (error) {
+          set({ error, loading: false })
+          throw error
+        }
+        // onAuthStateChange sẽ cập nhật state; đảm bảo initialized
+        set((s) => ({ ...s, initialized: true, loading: false }))
+      } catch (error) {
+        const authError = error as AuthError
+        set({ error: authError, loading: false, initialized: true })
+        throw error
+      }
+    },
+
     checkAuth: async () => {
       try {
         const { data: { user }, error } = await supabase.auth.getUser()
         if (error) throw error
 
+        // Nếu đã có user => hoàn tất
+        if (user) {
+          set({
+            user,
+            loading: false,
+            initialized: true,
+            error: null
+          })
+          return
+        }
+
+        // Thử bootstrap phiên qua Telegram Mini App nếu có initDataRaw
+        const initDataRaw = getInitDataRaw()
+        if (initDataRaw) {
+          set({ loading: true })
+          try {
+            const { access_token, refresh_token } = await exchangeTma(initDataRaw)
+            const { data, error: setErr } = await supabase.auth.setSession({ access_token, refresh_token })
+            if (setErr) throw setErr
+            set({
+              user: data.user,
+              loading: false,
+              initialized: true,
+              error: null
+            })
+            return
+          } catch (e) {
+            const authError = e as AuthError
+            set({ error: authError, loading: false, initialized: true })
+            return
+          }
+        }
+
+        // Không có user và không có TMA => coi như chưa đăng nhập
         set({
-          user,
+          user: null,
           loading: false,
           initialized: true,
           error: null

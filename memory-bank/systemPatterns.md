@@ -30,3 +30,36 @@
 - Memory Bank lives at repo root under `memory-bank/`.
 - Update `activeContext.md` after notable tasks; use `progress.md` to track milestones.
 - Reflect architecture shifts in this file to keep future sessions grounded.
+
+## Telegram Mini Apps (TMA) Auth Pattern
+
+- Goal: Cho phép TMA nhận diện người dùng Telegram và đăng nhập vào Supabase theo biến thể B1 (bridge session).
+- Frontend:
+  - Phát hiện `initDataRaw`: ưu tiên `window.Telegram.WebApp.initData`; fallback query `?tgWebAppData`/`?initData`. Helper tại `src/lib/tma.ts` (`getInitDataRaw`, `exchangeTma`).
+  - `auth.store.ts`:
+    - `checkAuth()` gọi Supabase `getUser()`. Nếu chưa có user và có `initDataRaw` ⇒ gọi `exchangeTma()` để đổi phiên rồi `supabase.auth.setSession(...)`.
+    - Thêm action `tmaLogin()` để trigger thủ công khi cần.
+- Edge Function: `supabase-functions/tma-exchange/index.ts`
+  - Xác thực `initDataRaw` theo Telegram:
+    - `data_check_string`: join các cặp key=value (bỏ `hash`), sort theo key, nối bằng `\n`.
+    - `secret_key = HMAC_SHA256(key='WebAppData', data=BOT_TOKEN)`.
+    - `check_hash = HMAC_SHA256(key=secret_key, data=data_check_string)` (hex) và so với `hash`.
+    - TTL: kiểm tra `auth_date` (mặc định ±24h) để chống replay.
+  - Upsert Supabase Auth user:
+    - Email alias: `tg_<telegram_id>@tma.local` (email_confirm true).
+    - Ghi `telegram_id`, `username`, ... vào `app_metadata`/`user_metadata`.
+  - Bridge session:
+    - Dùng Admin API `generateLink({ type: 'magiclink', email })` lấy `email_otp`.
+    - Gọi `${GOTRUE_URL}/verify` với `anon key` để nhận `{ access_token, refresh_token, user }`.
+  - Trả JSON cho client: tokens + `telegram_user`.
+  - Lưu ý: File dùng Deno; có `// @ts-nocheck` để tránh cảnh báo VSCode khi phát triển local.
+- Môi trường/Secrets:
+  - `TELEGRAM_BOT_TOKEN`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE`, `SUPABASE_ANON_KEY`, tùy chọn `GOTRUE_URL`.
+  - Client có thể đặt `VITE_TMA_EXCHANGE_URL` để override URL; mặc định `${VITE_SUPABASE_URL}/functions/v1/tma-exchange`.
+- RLS & Scope:
+  - RLS hoạt động dựa trên session Supabase đã mint; không cần thay đổi schema.
+  - App chạy trên route chính; `AuthGuard` sẽ bootstrap TMA trong `checkAuth`, sau đó vẫn giữ logic redirect `/login` nếu không trong TMA hoặc không có phiên.
+- Tài liệu:
+  - Hướng dẫn triển khai/triển khai thử tại `supabase-functions/tma-exchange/README.md`.
+  - Helpers client: `src/lib/tma.ts`.
+  - Tích hợp store: `src/stores/auth.store.ts`.
