@@ -17,6 +17,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { Toaster } from 'sonner'
 
 type NavItem = {
   to: string
@@ -60,28 +61,35 @@ function App() {
   }
 
   return (
-    <div className='mx-auto flex min-h-screen w-full max-w-md flex-col bg-background text-foreground'>
-      <header className='sticky top-0 z-10 border-b border-border bg-card/70 px-4 py-3 backdrop-blur'>
-        <div className='flex items-center justify-between'>
-          <h5 className='text-lg font-semibold'>{activeTitle}</h5>
+    <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-background text-foreground">
+      <header className="sticky top-0 z-10 border-b border-border bg-card/70 px-4 py-3 backdrop-blur">
+        <div className="flex items-center justify-between">
+          <h5 className="text-lg font-semibold">{activeTitle}</h5>
           {user && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant='ghost' size='sm' className='h-8 w-8 rounded-full'>
-                  <User className='h-4 w-4' />
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 w-8 rounded-full"
+                >
+                  <User className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align='end' className='w-48'>
-                <DropdownMenuItem disabled className='text-xs text-muted-foreground'>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem
+                  disabled
+                  className="text-xs text-muted-foreground"
+                >
                   {user.email}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   onClick={handleSignOut}
                   disabled={loading}
-                  className='text-destructive focus:text-destructive'
+                  className="text-destructive focus:text-destructive"
                 >
-                  <LogOut className='mr-2 h-4 w-4' />
+                  <LogOut className="mr-2 h-4 w-4" />
                   Đăng xuất
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -90,30 +98,32 @@ function App() {
         </div>
       </header>
 
-      <main className='flex-1 overflow-y-auto px-4 py-6'>
+      <main className="flex-1 overflow-y-auto px-4 py-6">
         <Outlet />
       </main>
 
-      <nav className='sticky bottom-0 z-10 border-t border-border bg-card/90 px-2 py-2 backdrop-blur'>
-        <div className='flex items-center justify-between gap-2'>
+      <nav className="sticky bottom-0 z-10 border-t border-border bg-card/90 px-2 py-2 backdrop-blur">
+        <div className="flex items-center justify-between gap-2">
           {navItems.map((item) => {
-            const Icon = item.icon
+            const Icon = item.icon;
             return (
               <NavLink
                 key={item.to}
                 to={item.to}
-                end={item.to === '/'}
+                end={item.to === "/"}
                 className={({ isActive }) => getNavClasses(isActive)}
               >
-                <Icon className='h-5 w-5' aria-hidden='true' />
+                <Icon className="h-5 w-5" aria-hidden="true" />
                 <span>{item.label}</span>
               </NavLink>
-            )
+            );
           })}
         </div>
       </nav>
+
+      <Toaster position="top-center" />
     </div>
-  )
+  );
 }
 
 export default App

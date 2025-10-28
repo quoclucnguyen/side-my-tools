@@ -17,6 +17,7 @@
 
 - `src/hooks/useInfiniteQuery.ts` implements a reusable Supabase infinite scroll hook backed by `useSyncExternalStore`; call `useInfiniteQuery({ tableName, columns, trailingQuery })` and render `fetchNextPage` controls when `hasMore` is true.
 - Inventory integrates the hook with `SupabaseQueryHandler` to keep results ordered by `expiration_date`, falling back to sample data when Supabase is empty.
+- Supabase write operations (create/update/delete) use TanStack Query `useMutation` hooks for consistent error handling, loading states, and optimistic updates. Image upload follows a standard pattern: resize with `pica`, upload to Supabase Storage with unique paths (`${user.id}/${uuid}.jpg`), extract public URL. Coordinate multiple UI states with `form.formState.isSubmitting || mutation.isPending`.
 
 ## Routing Conventions
 

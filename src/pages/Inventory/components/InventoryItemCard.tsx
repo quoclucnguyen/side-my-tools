@@ -4,7 +4,6 @@ import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { useDeleteFoodItem } from '../hooks/useDeleteFoodItem'
-
 import type { FoodItem } from '../types'
 import { formatExpiration, getExpirationVariant } from '../utils'
 import { InventoryItemDrawer } from './InventoryItemDrawer'
@@ -28,8 +27,7 @@ export function InventoryItemCard({ item, onDeleted }: Readonly<InventoryItemCar
     if (!confirm(`Bạn có chắc chắn muốn xóa "${item.name}"?`)) {
       return
     }
-
-    deleteFoodItem(Number(item.id))
+    deleteFoodItem(item.id);
   }
 
   return (
@@ -103,6 +101,7 @@ export function InventoryItemCard({ item, onDeleted }: Readonly<InventoryItemCar
         item={item}
         open={drawerOpen}
         onOpenChange={setDrawerOpen}
+        onUpdated={onDeleted}
       />
     </>
   )
