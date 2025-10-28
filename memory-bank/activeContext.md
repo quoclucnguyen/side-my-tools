@@ -14,6 +14,7 @@ _Last updated: 2025-10-13 by Codex (GPT-5)._
 - **Inventory Creation Flow**: Added `CreateFoodDrawer` using shadcn `Drawer` + `react-hook-form`/Zod to create food items manually (non-AI) and wired it to Supabase inserts with auth user context.
 - Enhanced `useInfiniteQuery` with a `refetch` method (re-initializes store state) so newly created food items appear immediately after submission.
 - Extended the creation drawer with optional image upload: resize via `pica` (max 800px, JPEG) before uploading to the Supabase storage bucket defined by `VITE_SUPABASE_FOOD_BUCKET`, storing the resulting public URL on new records.
+- Added AI-powered image analysis in `CreateFoodDrawer`, invoking Gemini to extract name/quantity/unit/expiration/category from the preview and auto-fill the form when the user’s API key is configured.
 
 - **Inventory Module Structure**: Refactored the `Inventory.tsx` file (~200 lines) into a modular structure under `src/pages/Inventory/`. Split into separate files: `types.ts` (type definitions), `constants.ts` (fallback data), `utils.ts` (utility functions), and `Inventory.tsx` (main component). The original `src/pages/Inventory.tsx` now serves as an entry point that re-exports the main component.
 - Introduced shadcn-style Card, Badge, and Alert components for the dashboard and inventory flows, reducing bespoke Tailwind markup.
