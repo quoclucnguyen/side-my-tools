@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation, Link } from 'react-router'
 import { Loader2, Mail, Lock, Eye, EyeOff } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth.store'
-import { getInitDataRaw } from '@/lib/tma'
+import { useRawInitData } from '@tma.js/sdk-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -16,20 +16,20 @@ export default function LoginPage() {
 
   const [isSignUp, setIsSignUp] = useState(false)
   const hasAttemptedTmaLogin = useRef(false)
+  const rawInitData = useRawInitData()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
 
   // Attempt Telegram Mini App login automatically when init data is available
   useEffect(() => {
-    const initDataRaw = getInitDataRaw()
-    if (!hasAttemptedTmaLogin.current && initDataRaw) {
+    if (!hasAttemptedTmaLogin.current && rawInitData) {
       hasAttemptedTmaLogin.current = true
-      tmaLogin().catch((err) => {
+      tmaLogin(rawInitData).catch((err) => {
         console.error('Telegram login failed:', err)
       })
     }
-  }, [tmaLogin])
+  }, [rawInitData, tmaLogin])
 
   // Redirect if already authenticated
   useEffect(() => {

@@ -13,7 +13,7 @@ interface AuthActions {
   signIn: (email: string, password: string) => Promise<void>
   signUp: (email: string, password: string) => Promise<void>
   signOut: () => Promise<void>
-  tmaLogin: () => Promise<void>
+  tmaLogin: (initDataRaw?: string | null) => Promise<void>
   checkAuth: () => Promise<void>
   clearError: () => void
 }
@@ -99,12 +99,12 @@ export const useAuthStore = create<AuthStore>((set) => {
     },
 
     // Đăng nhập qua Telegram Mini App: trao đổi initDataRaw lấy Supabase session
-    tmaLogin: async () => {
+    tmaLogin: async (initDataRaw) => {
       try {
-        const initDataRaw = getInitDataRaw()
-        if (!initDataRaw) return
+        const raw = initDataRaw ?? getInitDataRaw()
+        if (!raw) return
         set({ loading: true, error: null })
-        const { access_token, refresh_token } = await exchangeTma(initDataRaw)
+        const { access_token, refresh_token } = await exchangeTma(raw)
         const { error } = await supabase.auth.setSession({ access_token, refresh_token })
         if (error) {
           set({ error, loading: false })

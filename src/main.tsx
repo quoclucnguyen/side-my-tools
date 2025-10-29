@@ -1,6 +1,7 @@
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import { StrictMode } from "react";
+import { init } from "@tma.js/sdk-react";
 import { createMemoryRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -10,6 +11,8 @@ import SettingsPage from "./pages/Settings.tsx";
 import InventoryPage from "./pages/Inventory/Inventory.tsx";
 import LoginPage from "./pages/auth/Login.tsx";
 import AuthGuard from "./components/AuthGuard.tsx";
+
+init();
 
 const queryClient = new QueryClient({
   defaultOptions: {
