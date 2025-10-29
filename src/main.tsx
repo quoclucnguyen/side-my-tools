@@ -1,15 +1,15 @@
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import { StrictMode } from 'react'
-import { createBrowserRouter } from 'react-router'
-import { RouterProvider } from 'react-router/dom'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import App from './App.tsx'
-import DashboardPage from './pages/Dashboard.tsx'
-import SettingsPage from './pages/Settings.tsx'
-import InventoryPage from './pages/Inventory/Inventory.tsx'
-import LoginPage from './pages/auth/Login.tsx'
-import AuthGuard from './components/AuthGuard.tsx'
+import { createRoot } from "react-dom/client";
+import "./index.css";
+import { StrictMode } from "react";
+import { createMemoryRouter } from "react-router";
+import { RouterProvider } from "react-router/dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import App from "./App.tsx";
+import DashboardPage from "./pages/Dashboard.tsx";
+import SettingsPage from "./pages/Settings.tsx";
+import InventoryPage from "./pages/Inventory/Inventory.tsx";
+import LoginPage from "./pages/auth/Login.tsx";
+import AuthGuard from "./components/AuthGuard.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,17 +18,17 @@ const queryClient = new QueryClient({
       retry: 0,
     },
   },
-})
+});
 
-const router = createBrowserRouter([
+const router = createMemoryRouter([
   // Public routes
   {
-    path: '/login',
+    path: "/login",
     element: <LoginPage />,
   },
   // Protected routes
   {
-    path: '/',
+    path: "/",
     element: (
       <QueryClientProvider client={queryClient}>
         <AuthGuard>
@@ -38,14 +38,14 @@ const router = createBrowserRouter([
     ),
     children: [
       { index: true, element: <DashboardPage /> },
-      { path: 'inventory', element: <InventoryPage /> },
-      { path: 'settings', element: <SettingsPage /> },
+      { path: "inventory", element: <InventoryPage /> },
+      { path: "settings", element: <SettingsPage /> },
     ],
   },
-])
+]);
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>,
-)
+  </StrictMode>
+);
