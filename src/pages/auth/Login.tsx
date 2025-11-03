@@ -70,6 +70,18 @@ export default function LoginPage() {
     return null // Will redirect via useEffect
   }
 
+  // Show loading screen while authentication is in progress
+  if (loading && !user) {
+    return (
+      <div className='flex min-h-screen items-center justify-center px-4 py-8'>
+        <div className='flex flex-col items-center gap-4'>
+          <Loader2 className='h-8 w-8 animate-spin text-primary' />
+          <p className='text-sm text-muted-foreground'>Đang kiểm tra đăng nhập...</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className='flex min-h-screen items-center justify-center px-4 py-8'>
       <Card className='w-full max-w-md'>

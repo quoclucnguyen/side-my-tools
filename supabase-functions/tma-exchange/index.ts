@@ -76,32 +76,61 @@ Deno.serve(async (req) => {
   }
 
   try {
+    console.log('[TMA-Exchange] Request received');
+    
     const env = {
-      BOT_TOKEN: Deno.env.get('TELEGRAM_BOT_TOKEN') ?? '',
-      SUPABASE_URL: Deno.env.get('SUPABASE_URL') ?? '',
-      SUPABASE_SERVICE_ROLE: Deno.env.get('SUPABASE_SERVICE_ROLE') ?? '',
-      SUPABASE_ANON_KEY: Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      GOTRUE_URL: Deno.env.get('GOTRUE_URL') || (Deno.env.get('SUPABASE_URL') ? `${Deno.env.get('SUPABASE_URL')}/auth/v1` : ''),
+      BOT_TOKEN: Deno.env.get("TELEGRAM_BOT_TOKEN") ?? "",
+      SUPABASE_URL: Deno.env.get("SUPABASE_URL") ?? "",
+      SUPABASE_SERVICE_ROLE: Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
+      SUPABASE_ANON_KEY: Deno.env.get("SUPABASE_ANON_KEY") ?? "",
+      GOTRUE_URL:
+        Deno.env.get("GOTRUE_URL") ||
+        (Deno.env.get("SUPABASE_URL")
+          ? `${Deno.env.get("SUPABASE_URL")}/auth/v1`
+          : ""),
     };
 
+    console.log('[TMA-Exchange] Env check:', {
+      hasBotToken: !!env.BOT_TOKEN,
+      hasSupabaseUrl: !!env.SUPABASE_URL,
+      hasServiceRole: !!env.SUPABASE_SERVICE_ROLE,
+      hasAnonKey: !!env.SUPABASE_ANON_KEY,
+      hasGotrueUrl: !!env.GOTRUE_URL,
+    });
+
     if (!env.BOT_TOKEN || !env.SUPABASE_URL || !env.SUPABASE_SERVICE_ROLE || !env.SUPABASE_ANON_KEY || !env.GOTRUE_URL) {
+      console.error('[TMA-Exchange] Missing required environment variables');
       return badRequest('Missing required environment variables', 500);
     }
 
     const body = await req.json().catch(() => ({}));
     const initDataRaw: unknown = body?.initDataRaw;
+    
+    console.log('[TMA-Exchange] Body parsed, initDataRaw present:', !!initDataRaw);
+    
     if (!initDataRaw || typeof initDataRaw !== 'string') {
+      console.error('[TMA-Exchange] initDataRaw missing or invalid type');
       return badRequest('initDataRaw is required');
     }
 
     // Parse and verify Telegram initData
     const params = new URLSearchParams(initDataRaw);
     const providedHash = params.get('hash');
+    
+    console.log('[TMA-Exchange] Parsed params:', {
+      hasHash: !!providedHash,
+      hasUser: !!params.get('user'),
+      hasAuthDate: !!params.get('auth_date'),
+      hasQueryId: !!params.get('query_id'),
+    });
+    
     if (!providedHash) {
+      console.error('[TMA-Exchange] Missing hash in initDataRaw');
       return badRequest('Missing hash in initDataRaw');
     }
 
     const dataCheckString = buildDataCheckString(params);
+    console.log('[TMA-Exchange] Data check string built, length:', dataCheckString.length);
 
     // Telegram algorithm:
     // secret_key = HMAC_SHA256(key=BOT_TOKEN, data='WebAppData')
@@ -111,7 +140,14 @@ Deno.serve(async (req) => {
     const checkHashBuf = await hmacSha256(secretKeyBuf, dataCheckString);
     const calculatedHashHex = toHex(checkHashBuf);
 
+    console.log('[TMA-Exchange] Hash verification:', {
+      providedHash: providedHash.substring(0, 8) + '...',
+      calculatedHash: calculatedHashHex.substring(0, 8) + '...',
+      match: calculatedHashHex === providedHash,
+    });
+
     if (calculatedHashHex !== providedHash) {
+      console.error('[TMA-Exchange] Hash mismatch - provided:', providedHash, 'calculated:', calculatedHashHex);
       return badRequest('Invalid initData hash', 401);
     }
 
@@ -120,26 +156,49 @@ Deno.serve(async (req) => {
     const authDate = authDateStr ? Number(authDateStr) : NaN;
     const nowSec = Math.floor(Date.now() / 1000);
     const maxAgeSec = 86400; // 24h
+    const ageDelta = nowSec - authDate;
+    
+    console.log('[TMA-Exchange] TTL check:', {
+      authDate,
+      nowSec,
+      ageDelta,
+      maxAgeSec,
+      isFinite: Number.isFinite(authDate),
+      isExpired: Math.abs(ageDelta) > maxAgeSec,
+    });
+    
     if (!Number.isFinite(authDate) || Math.abs(nowSec - authDate) > maxAgeSec) {
+      console.error('[TMA-Exchange] initData expired or invalid auth_date');
       return badRequest('initData expired', 401);
     }
 
     const tgUser = parseInitUser(params.get('user'));
+    console.log('[TMA-Exchange] Telegram user parsed:', {
+      hasUser: !!tgUser,
+      hasId: !!tgUser?.id,
+      userId: tgUser?.id,
+    });
+    
     if (!tgUser || !tgUser.id) {
+      console.error('[TMA-Exchange] Invalid Telegram user payload');
       return badRequest('Invalid Telegram user payload');
     }
 
     // Compose Supabase identity (email alias for Telegram user)
     const email = `tg_${tgUser.id}@tma.local`;
+    console.log('[TMA-Exchange] Email alias created:', email);
 
     // Admin client
     const supaAdmin = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_ROLE, {
       auth: { autoRefreshToken: false, persistSession: false },
     });
 
+    console.log('[TMA-Exchange] Admin client created');
+
     // Ensure user exists (idempotent)
     // Attempt create; if already exists, ignore error
     {
+      console.log('[TMA-Exchange] Attempting to create/ensure user exists');
       const { error: createErr } = await supaAdmin.auth.admin.createUser({
         email,
         email_confirm: true,
@@ -154,11 +213,14 @@ Deno.serve(async (req) => {
       });
       if (createErr && !/already|exists/i.test(createErr.message || '')) {
         // Non-idempotent error
+        console.error('[TMA-Exchange] Failed to create user:', createErr);
         return badRequest('Failed to ensure user', 500);
       }
+      console.log('[TMA-Exchange] User ensured, createErr:', createErr?.message || 'none');
     }
 
     // Generate magic link OTP and exchange to session
+    console.log('[TMA-Exchange] Generating magic link');
     const { data: linkData, error: linkErr } = await supaAdmin.auth.admin.generateLink({
       type: 'magiclink',
       email,
@@ -175,12 +237,15 @@ Deno.serve(async (req) => {
     });
 
     if (linkErr || !linkData?.properties?.email_otp) {
+      console.error('[TMA-Exchange] Failed to generate OTP:', linkErr);
       return badRequest('Failed to generate OTP', 500);
     }
 
     const emailOtp = linkData.properties.email_otp as string;
+    console.log('[TMA-Exchange] OTP generated, length:', emailOtp.length);
 
     // Exchange OTP to session tokens
+    console.log('[TMA-Exchange] Exchanging OTP for session at:', env.GOTRUE_URL);
     const verifyResp = await fetch(`${env.GOTRUE_URL}/verify`, {
       method: 'POST',
       headers: {
@@ -196,10 +261,12 @@ Deno.serve(async (req) => {
 
     if (!verifyResp.ok) {
       const txt = await verifyResp.text().catch(() => '');
+      console.error('[TMA-Exchange] OTP verify failed:', verifyResp.status, txt);
       return badRequest(`OTP verify failed: ${txt || verifyResp.status}`, 500);
     }
 
     const session = await verifyResp.json();
+    console.log('[TMA-Exchange] Session created successfully for user:', tgUser.id);
 
     // Return session to the client
     return okJson({
@@ -219,6 +286,7 @@ Deno.serve(async (req) => {
   } catch (e) {
     // Avoid leaking secrets in errors
     const msg = e instanceof Error ? e.message : 'Unknown error';
+    console.error('[TMA-Exchange] Caught exception:', msg, e instanceof Error ? e.stack : '');
     return badRequest(`Internal Error: ${msg}`, 500);
   }
 });
