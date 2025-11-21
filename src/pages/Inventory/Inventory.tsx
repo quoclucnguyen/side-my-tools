@@ -51,16 +51,30 @@ export default function InventoryPage() {
 
 
   return (
-    <section className='space-y-4'>
-      <div className='flex justify-end'>
+    <section className='space-y-6'>
+      {/* Header with add button */}
+      <div className='flex items-center justify-between'>
+        <div className='flex-1'>
+          <h2 className='text-lg font-bold text-muted-foreground'>
+            {items.length} món trong kho
+          </h2>
+        </div>
         <CreateFoodDrawer onCreated={refetch} />
       </div>
+
+      {/* Inventory list */}
       {items.length === 0 ? (
         <EmptyInventoryAlert />
       ) : (
-        <div className='space-y-2'>
-          {items.map((item) => (
-            <InventoryItemCard key={item.id} item={item} onDeleted={refetch} />
+        <div className='space-y-3'>
+          {items.map((item, index) => (
+            <div
+              key={item.id}
+              className='animate-fade-in-up'
+              style={{ animationDelay: `${index * 50}ms` }}
+            >
+              <InventoryItemCard item={item} onDeleted={refetch} />
+            </div>
           ))}
           <LoadMoreButton
             isFetching={isFetching}

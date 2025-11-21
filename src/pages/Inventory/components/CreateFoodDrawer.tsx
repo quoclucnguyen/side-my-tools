@@ -25,6 +25,7 @@ import {
   DrawerTrigger,
   DrawerClose,
 } from '@/components/ui/drawer'
+import { Plus } from 'lucide-react'
 import { units, categories, type CreateFoodDrawerProps } from './CreateFoodDrawer.helpers'
 import { useCreateFoodForm } from './useCreateFoodForm'
 import { ImageField } from './ImageField'
@@ -47,7 +48,13 @@ export function CreateFoodDrawer({ onCreated }: Readonly<CreateFoodDrawerProps>)
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button size="sm">Thêm mới</Button>
+        <Button
+          size="lg"
+          className="rounded-2xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-smooth font-semibold gap-2"
+        >
+          <Plus className="h-5 w-5" />
+          Thêm mới
+        </Button>
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="text-left">

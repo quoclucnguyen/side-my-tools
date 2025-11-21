@@ -103,16 +103,18 @@ export default function SettingsPage() {
   }
 
   return (
-    <section className='space-y-4'>
-      <header>
-        <h1 className='text-2xl font-semibold'>Cài đặt</h1>
-        <p className='text-sm text-muted-foreground'>
+    <section className='space-y-6'>
+      <header className='space-y-3 pb-2'>
+        <h1 className='text-3xl font-extrabold tracking-tight bg-gradient-to-br from-primary via-foreground to-secondary bg-clip-text text-transparent'>
+          Cài đặt
+        </h1>
+        <p className='text-base text-muted-foreground leading-relaxed'>
           Chọn các tùy chọn dưới đây để cấu hình trải nghiệm của bạn.
         </p>
       </header>
 
       {settingsError && (
-        <Alert variant='destructive'>
+        <Alert variant='destructive' className='rounded-xl border-destructive/30'>
           <AlertCircle className='h-4 w-4' />
           <AlertDescription>
             Không thể tải cài đặt. Vui lòng thử lại sau.
@@ -121,28 +123,35 @@ export default function SettingsPage() {
       )}
 
       {/* Gemini API Configuration */}
-      <Card>
-        <CardHeader>
-          <CardTitle className='text-lg flex items-center gap-2'>
-            <Key className='h-5 w-5' />
-            Cấu hình Gemini AI
-          </CardTitle>
-          <CardDescription>
-            Thiết lập API key của Google Gemini để sử dụng các tính năng AI.
+      <Card className='border-border/50 shadow-lg shadow-black/5 overflow-hidden animate-fade-in-up'>
+        <div className='absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl' />
+        <CardHeader className='relative z-10'>
+          <div className='flex items-center gap-3'>
+            <div className='h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center'>
+              <Key className='h-5 w-5 text-primary' />
+            </div>
+            <div>
+              <CardTitle className='text-xl font-bold'>Cấu hình Gemini AI</CardTitle>
+              <CardDescription className='text-sm mt-1'>
+                Thiết lập API key của Google Gemini để sử dụng các tính năng AI.
+              </CardDescription>
+            </div>
+          </div>
+          <CardDescription className='mt-3 pl-13'>
             Lấy API key tại{' '}
             <a
               href='https://aistudio.google.com/app/apikey'
               target='_blank'
               rel='noopener noreferrer'
-              className='text-primary hover:underline'
+              className='text-primary hover:text-primary/80 font-semibold transition-smooth'
             >
-              Google AI Studio
+              Google AI Studio →
             </a>
           </CardDescription>
         </CardHeader>
-        <CardContent className='space-y-4'>
+        <CardContent className='space-y-5 relative z-10'>
           <div className='space-y-2'>
-            <Label htmlFor='gemini-api-key'>Gemini API Key</Label>
+            <Label htmlFor='gemini-api-key' className='font-semibold'>Gemini API Key</Label>
             <div className='flex gap-2'>
               <Input
                 id='gemini-api-key'
@@ -150,7 +159,7 @@ export default function SettingsPage() {
                 placeholder='AIza...'
                 value={apiKey}
                 onChange={(e) => setApiKey(e.target.value)}
-                className='flex-1'
+                className='flex-1 h-11 rounded-xl border-border/50 focus:border-primary transition-smooth'
                 disabled={saveGeminiKeyMutation.isPending}
               />
               <Button
@@ -159,6 +168,7 @@ export default function SettingsPage() {
                 size='sm'
                 onClick={() => setShowApiKey(!showApiKey)}
                 disabled={saveGeminiKeyMutation.isPending}
+                className='rounded-xl h-11 px-4 hover:bg-muted transition-smooth'
               >
                 {showApiKey ? 'Ẩn' : 'Hiện'}
               </Button>
@@ -172,7 +182,7 @@ export default function SettingsPage() {
             <Button
               onClick={handleSaveGeminiKey}
               disabled={saveGeminiKeyMutation.isPending || (apiKey.trim() === (settings?.gemini_api_key || ''))}
-              className='flex-1'
+              className='flex-1 h-11 rounded-xl font-semibold shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-smooth'
             >
               {saveGeminiKeyMutation.isPending ? (
                 <>
@@ -192,6 +202,7 @@ export default function SettingsPage() {
                 variant='outline'
                 onClick={handleClearApiKey}
                 disabled={saveGeminiKeyMutation.isPending}
+                className='rounded-xl h-11 px-5 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30 transition-smooth'
               >
                 Xóa
               </Button>

@@ -83,13 +83,26 @@ export default function LoginPage() {
   }
 
   return (
-    <div className='flex min-h-screen items-center justify-center px-4 py-8'>
-      <Card className='w-full max-w-md'>
-        <CardHeader className='space-y-1'>
-          <CardTitle className='text-2xl text-center'>
+    <div className='flex min-h-screen items-center justify-center px-4 py-8 relative overflow-hidden'>
+      {/* Background decorative elements */}
+      <div className='absolute inset-0 -z-10'>
+        <div className='absolute top-0 right-0 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-float' />
+        <div className='absolute bottom-0 left-0 w-96 h-96 bg-accent/20 rounded-full blur-3xl animate-float' style={{ animationDelay: '1.5s' }} />
+      </div>
+
+      <Card className='w-full max-w-md shadow-2xl shadow-primary/10 border-border/50 backdrop-blur-sm bg-card/95 animate-fade-in-up'>
+        <CardHeader className='space-y-3 text-center pb-6'>
+          {/* App icon */}
+          <div className='mx-auto w-16 h-16 rounded-3xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shadow-lg shadow-primary/30'>
+            <svg className='w-8 h-8 text-primary-foreground' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' />
+            </svg>
+          </div>
+
+          <CardTitle className='text-3xl font-extrabold bg-gradient-to-br from-primary via-foreground to-secondary bg-clip-text text-transparent'>
             {isSignUp ? 'Đăng ký tài khoản' : 'Đăng nhập'}
           </CardTitle>
-          <CardDescription className='text-center'>
+          <CardDescription className='text-base'>
             {isSignUp
               ? 'Tạo tài khoản mới để truy cập ứng dụng'
               : 'Nhập thông tin đăng nhập của bạn'
@@ -98,18 +111,18 @@ export default function LoginPage() {
         </CardHeader>
 
         <CardContent>
-          <form onSubmit={handleSubmit} className='space-y-4'>
+          <form onSubmit={handleSubmit} className='space-y-5'>
             <div className='space-y-2'>
-              <Label htmlFor='email'>Email</Label>
+              <Label htmlFor='email' className='font-semibold'>Email</Label>
               <div className='relative'>
-                <Mail className='absolute left-3 top-3 h-4 w-4 text-muted-foreground' />
+                <Mail className='absolute left-4 top-3.5 h-4 w-4 text-muted-foreground' />
                 <Input
                   id='email'
                   type='email'
                   placeholder='your@email.com'
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className='pl-10'
+                  className='pl-11 h-12 rounded-xl border-border/50 focus:border-primary transition-smooth'
                   required
                   disabled={loading}
                 />
@@ -117,16 +130,16 @@ export default function LoginPage() {
             </div>
 
             <div className='space-y-2'>
-              <Label htmlFor='password'>Mật khẩu</Label>
+              <Label htmlFor='password' className='font-semibold'>Mật khẩu</Label>
               <div className='relative'>
-                <Lock className='absolute left-3 top-3 h-4 w-4 text-muted-foreground' />
+                <Lock className='absolute left-4 top-3.5 h-4 w-4 text-muted-foreground' />
                 <Input
                   id='password'
                   type={showPassword ? 'text' : 'password'}
                   placeholder='••••••••'
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className='pl-10 pr-10'
+                  className='pl-11 pr-12 h-12 rounded-xl border-border/50 focus:border-primary transition-smooth'
                   required
                   disabled={loading}
                 />
@@ -134,7 +147,7 @@ export default function LoginPage() {
                   type='button'
                   variant='ghost'
                   size='sm'
-                  className='absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent'
+                  className='absolute right-1 top-1 h-10 w-10 rounded-lg hover:bg-muted transition-smooth'
                   onClick={() => setShowPassword(!showPassword)}
                   disabled={loading}
                 >
@@ -148,22 +161,26 @@ export default function LoginPage() {
             </div>
 
             {error && (
-              <Alert variant='destructive'>
+              <Alert variant='destructive' className='rounded-xl border-destructive/30'>
                 <AlertDescription>{error.message}</AlertDescription>
               </Alert>
             )}
 
-            <Button type='submit' className='w-full' disabled={loading}>
-              {loading && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+            <Button
+              type='submit'
+              className='w-full h-12 rounded-xl font-semibold text-base shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-smooth'
+              disabled={loading}
+            >
+              {loading && <Loader2 className='mr-2 h-5 w-5 animate-spin' />}
               {isSignUp ? 'Đăng ký' : 'Đăng nhập'}
             </Button>
           </form>
 
-          <div className='mt-6 text-center text-sm'>
+          <div className='mt-8 text-center text-sm space-y-4'>
             <button
               type='button'
               onClick={() => setIsSignUp(!isSignUp)}
-              className='text-primary hover:underline'
+              className='text-primary hover:text-primary/80 font-semibold transition-smooth'
               disabled={loading}
             >
               {isSignUp
@@ -171,15 +188,15 @@ export default function LoginPage() {
                 : 'Chưa có tài khoản? Đăng ký'
               }
             </button>
-          </div>
 
-          <div className='mt-4 text-center'>
-            <Link
-              to='/'
-              className='text-sm text-muted-foreground hover:text-foreground'
-            >
-              Quay lại trang chủ
-            </Link>
+            <div>
+              <Link
+                to='/'
+                className='text-muted-foreground hover:text-foreground transition-smooth'
+              >
+                ← Quay lại trang chủ
+              </Link>
+            </div>
           </div>
         </CardContent>
       </Card>
