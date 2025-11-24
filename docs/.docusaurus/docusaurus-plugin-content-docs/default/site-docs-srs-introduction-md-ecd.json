@@ -1,0 +1,23 @@
+{
+  "id": "srs/introduction",
+  "title": "Giới thiệu",
+  "description": "Mục đích",
+  "source": "@site/docs/srs/introduction.md",
+  "sourceDirName": "srs",
+  "slug": "/srs/introduction",
+  "permalink": "/docs/srs/introduction",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Side My Tools Mockup",
+    "permalink": "/docs/home"
+  },
+  "next": {
+    "title": "Mô tả tổng quan",
+    "permalink": "/docs/srs/overall-description"
+  }
+}

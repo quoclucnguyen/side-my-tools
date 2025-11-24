@@ -1,0 +1,23 @@
+{
+  "id": "srs/non-functional-requirements",
+  "title": "Yêu cầu phi chức năng",
+  "description": "REQ-NF-001: Hiệu suất",
+  "source": "@site/docs/srs/non-functional-requirements.md",
+  "sourceDirName": "srs",
+  "slug": "/srs/non-functional-requirements",
+  "permalink": "/docs/srs/non-functional-requirements",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Yêu cầu chức năng",
+    "permalink": "/docs/srs/functional-requirements"
+  },
+  "next": {
+    "title": "Yêu cầu giao diện",
+    "permalink": "/docs/srs/interface-requirements"
+  }
+}

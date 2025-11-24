@@ -1,0 +1,23 @@
+{
+  "id": "srs/appendices",
+  "title": "Phụ lục",
+  "description": "Thuật ngữ chuyên ngành",
+  "source": "@site/docs/srs/appendices.md",
+  "sourceDirName": "srs",
+  "slug": "/srs/appendices",
+  "permalink": "/docs/srs/appendices",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Yêu cầu giao diện",
+    "permalink": "/docs/srs/interface-requirements"
+  },
+  "next": {
+    "title": "Tổng quan Wireframes",
+    "permalink": "/docs/wireframes/overview"
+  }
+}

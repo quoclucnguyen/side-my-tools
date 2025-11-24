@@ -1,0 +1,19 @@
+{
+  "id": "home",
+  "title": "Side My Tools Mockup",
+  "description": "Welcome to the Side My Tools documentation mockup. This single page acts as a placeholder for future content.",
+  "source": "@site/docs/home.md",
+  "sourceDirName": ".",
+  "slug": "/home",
+  "permalink": "/docs/home",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "next": {
+    "title": "Giới thiệu",
+    "permalink": "/docs/srs/introduction"
+  }
+}

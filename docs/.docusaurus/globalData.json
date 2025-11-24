@@ -1,0 +1,86 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "path": "/docs",
+      "versions": [
+        {
+          "name": "current",
+          "label": "Next",
+          "isLast": true,
+          "path": "/docs",
+          "mainDocId": "README",
+          "docs": [
+            {
+              "id": "future-enhancements",
+              "path": "/docs/future-enhancements"
+            },
+            {
+              "id": "home",
+              "path": "/docs/home",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "README",
+              "path": "/docs/"
+            },
+            {
+              "id": "srs/appendices",
+              "path": "/docs/srs/appendices",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "srs/functional-requirements",
+              "path": "/docs/srs/functional-requirements",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "srs/interface-requirements",
+              "path": "/docs/srs/interface-requirements",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "srs/introduction",
+              "path": "/docs/srs/introduction",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "srs/non-functional-requirements",
+              "path": "/docs/srs/non-functional-requirements",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "srs/overall-description",
+              "path": "/docs/srs/overall-description",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "wireframes/components",
+              "path": "/docs/wireframes/components",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "wireframes/overview",
+              "path": "/docs/wireframes/overview",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "wireframes/screens",
+              "path": "/docs/wireframes/screens",
+              "sidebar": "tutorialSidebar"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {
+            "tutorialSidebar": {
+              "link": {
+                "path": "/docs/home",
+                "label": "home"
+              }
+            }
+          }
+        }
+      ],
+      "breadcrumbs": true
+    }
+  }
+}

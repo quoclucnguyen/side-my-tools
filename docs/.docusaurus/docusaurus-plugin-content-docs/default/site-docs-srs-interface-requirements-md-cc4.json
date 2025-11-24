@@ -1,0 +1,23 @@
+{
+  "id": "srs/interface-requirements",
+  "title": "Yêu cầu giao diện",
+  "description": "REQ-UI-001: Layout chính",
+  "source": "@site/docs/srs/interface-requirements.md",
+  "sourceDirName": "srs",
+  "slug": "/srs/interface-requirements",
+  "permalink": "/docs/srs/interface-requirements",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Yêu cầu phi chức năng",
+    "permalink": "/docs/srs/non-functional-requirements"
+  },
+  "next": {
+    "title": "Phụ lục",
+    "permalink": "/docs/srs/appendices"
+  }
+}

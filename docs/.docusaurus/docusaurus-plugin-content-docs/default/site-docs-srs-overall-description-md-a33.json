@@ -1,0 +1,23 @@
+{
+  "id": "srs/overall-description",
+  "title": "Mô tả tổng quan",
+  "description": "Quan điểm sản phẩm",
+  "source": "@site/docs/srs/overall-description.md",
+  "sourceDirName": "srs",
+  "slug": "/srs/overall-description",
+  "permalink": "/docs/srs/overall-description",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Giới thiệu",
+    "permalink": "/docs/srs/introduction"
+  },
+  "next": {
+    "title": "Yêu cầu chức năng",
+    "permalink": "/docs/srs/functional-requirements"
+  }
+}
