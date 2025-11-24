@@ -11,6 +11,7 @@ _Last updated: 2025-10-13 by Codex (GPT-5)._
 - Adopt the Cline Memory Bank workflow to persist project knowledge inside `memory-bank/`.
 
 ## Recent Changes
+
 - **Inventory Creation Flow**: Added `CreateFoodDrawer` using shadcn `Drawer` + `react-hook-form`/Zod to create food items manually (non-AI) and wired it to Supabase inserts with auth user context.
 - Enhanced `useInfiniteQuery` with a `refetch` method (re-initializes store state) so newly created food items appear immediately after submission.
 - Extended the creation drawer with optional image upload: resize via `pica` (max 800px, JPEG) before uploading to the Supabase storage bucket defined by `VITE_SUPABASE_FOOD_BUCKET`, storing the resulting public URL on new records.
@@ -27,6 +28,8 @@ _Last updated: 2025-10-13 by Codex (GPT-5)._
 - Documented project goals, product context, and progress via new memory-bank markdown files.
 - Simplified the Docusaurus docs package to a single `home` page and removed the starter blog/sidebar content so the docs folder is a clean mockup.
 - Extended SRS REQ-005 to capture the AI-assisted "Tạo thực phẩm mới" flow and associated validation rules.
+- Fixed CSS import order in `src/index.css` to resolve PostCSS error.
+- Conducted full project review and updated Memory Bank to reflect `createMemoryRouter` usage and TMA integration details.
 
 ## Next Steps
 

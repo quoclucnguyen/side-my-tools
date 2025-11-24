@@ -2,7 +2,7 @@
 
 ## Architecture Overview
 
-- **Entry**: `src/main.tsx` bootstraps React 19 strict mode, builds a `createBrowserRouter` tree, and renders via `<RouterProvider />` from `react-router/dom`.
+- **Entry**: `src/main.tsx` bootstraps React 19 strict mode, builds a `createMemoryRouter` tree (for TMA compatibility), and renders via `<RouterProvider />` from `react-router/dom`.
 - **App Shell**: `src/App.tsx` acts as the persistent layout—derives `activeTitle` from `useLocation`, exposes `<Outlet />` for route children, and renders a sticky header + bottom navigation.
 - **Pages**: Route elements live in `src/pages/` as modular functional components. Large page components (like Inventory) are organized in subdirectories with type definitions (`types.ts`), constants (`constants.ts`), utilities (`utils.ts`), and the main component (`Inventory.tsx`). Main export files (e.g., `Inventory.tsx`) serve as entry points that import from the module structure. All components rely on Tailwind tokens for styling (`bg-card`, `border-border`, etc.).
 - **Global Styles**: `src/index.css` (Tailwind v4 inline theme) defines design tokens, resets, and ensures `body`/`#root` cover full viewport height.

@@ -15,6 +15,8 @@ _Chronological timeline of major milestones. Update after meaningful changes._
 - **2025-10-13** — Documented the AI-assisted flow for creating new food items in SRS REQ-005, including validation requirements.
 - **2025-10-13** — Shipped manual "Tạo mới thực phẩm" drawer (non-AI) with Zod validation, Supabase insert, and inventory refetch support.
 - **2025-10-14** — Added optional image upload to the create-food drawer with client-side resize via pica, Supabase storage integration, and updated SRS documentation.
+- **2025-11-24** — Fixed CSS import order in `src/index.css` to resolve PostCSS error.
+- **2025-11-24** — Updated Memory Bank files (`systemPatterns.md`, `techContext.md`) to align with actual codebase (TMA auth, MemoryRouter).
 
 ## In Flight
 

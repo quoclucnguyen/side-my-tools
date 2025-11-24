@@ -3,7 +3,7 @@
 ## Stack
 
 - **Runtime**: React 19.1 + TypeScript 5.9 (strict), Vite 7 bundler.
-- **Routing**: `react-router` v7 (`RouterProvider` from `react-router/dom`).
+- **Routing**: `react-router` v7 (`createMemoryRouter` + `RouterProvider` from `react-router/dom`) to support Telegram Mini App environment.
 - **Styling**: Tailwind CSS 4.1 w/ inline theme tokens in `src/index.css`; tw-animate for extra animations; shadcn-style tokens but components not yet imported.
 - **Icons**: `lucide-react` available for future use.
 - **Media processing**: `pica` (client-side) resizes inventory images before upload.
@@ -36,33 +36,35 @@
 
 ### `public.food_items`
 
-| Column           | Type         | Constraints / Notes                                      |
-| ---------------- | ------------ | -------------------------------------------------------- |
-| `id`             | `uuid`       | Primary key, defaults to `gen_random_uuid()`            |
-| `user_id`        | `uuid`       | FK → `auth.users(id)`, nullable, cascade delete         |
-| `name`           | `text`       | Required                                                 |
-| `quantity`       | `numeric`    | Required                                                 |
-| `unit`           | `text`       | Required                                                 |
-| `expiration_date`| `date`       | Required                                                 |
-| `category`       | `text`       | Required                                                 |
-| `created_at`     | `timestamptz`| Defaults to `now()`                                      |
-| `updated_at`     | `timestamptz`| Defaults to `now()`                                      |
-| `image_url`      | `text`       | Optional                                                 |
+| Column            | Type          | Constraints / Notes                             |
+| ----------------- | ------------- | ----------------------------------------------- |
+| `id`              | `uuid`        | Primary key, defaults to `gen_random_uuid()`    |
+| `user_id`         | `uuid`        | FK → `auth.users(id)`, nullable, cascade delete |
+| `name`            | `text`        | Required                                        |
+| `quantity`        | `numeric`     | Required                                        |
+| `unit`            | `text`        | Required                                        |
+| `expiration_date` | `date`        | Required                                        |
+| `category`        | `text`        | Required                                        |
+| `created_at`      | `timestamptz` | Defaults to `now()`                             |
+| `updated_at`      | `timestamptz` | Defaults to `now()`                             |
+| `image_url`       | `text`        | Optional                                        |
 
 Indexes:
+
 - `idx_food_items_expiration` on `(expiration_date)`
 - `idx_food_items_user_id` on `(user_id)`
 
 ### `public.user_settings`
 
-| Column           | Type         | Constraints / Notes                                      |
-| ---------------- | ------------ | -------------------------------------------------------- |
-| `id`             | `uuid`       | Primary key, defaults to `gen_random_uuid()`            |
-| `user_id`        | `uuid`       | FK → `auth.users(id)`, unique, cascade delete           |
-| `preferences`    | `jsonb`      | Defaults to `{}`                                         |
-| `gemini_api_key` | `text`       | Optional user's Gemini API key                           |
-| `created_at`     | `timestamptz`| Defaults to `now()`                                      |
-| `updated_at`     | `timestamptz`| Defaults to `now()`                                      |
+| Column           | Type          | Constraints / Notes                           |
+| ---------------- | ------------- | --------------------------------------------- |
+| `id`             | `uuid`        | Primary key, defaults to `gen_random_uuid()`  |
+| `user_id`        | `uuid`        | FK → `auth.users(id)`, unique, cascade delete |
+| `preferences`    | `jsonb`       | Defaults to `{}`                              |
+| `gemini_api_key` | `text`        | Optional user's Gemini API key                |
+| `created_at`     | `timestamptz` | Defaults to `now()`                           |
+| `updated_at`     | `timestamptz` | Defaults to `now()`                           |
 
 Indexes:
+
 - `idx_user_settings_user_id` on `(user_id)`
