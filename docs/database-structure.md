@@ -17,7 +17,24 @@ Lưu trữ cài đặt và tùy chọn của người dùng.
 | `created_at`     | `timestamptz` | Thời gian tạo. Default: `now()`                                   |
 | `updated_at`     | `timestamptz` | Thời gian cập nhật. Default: `now()`                              |
 
-### 2. `food_items`
+### 2. `users`
+
+Lưu trữ thông tin người dùng được đồng bộ từ Telegram. Bảng này được tạo và cập nhật khi người dùng tương tác với Telegram Bot.
+
+| Column Name  | Type          | Description                                                              |
+| :----------- | :------------ | :----------------------------------------------------------------------- |
+| `id`         | `uuid`        | Primary Key. Foreign Key tới `auth.users.id`.                            |
+| `telegram_id`| `bigint`      | ID người dùng từ Telegram. Unique.                                       |
+| `chat_id`    | `bigint`      | ID cuộc trò chuyện với người dùng.                                        |
+| `email`      | `text`        | Email được tạo tự động (`tg-<telegram_id>@telegram.local`). Unique.       |
+| `first_name` | `text`        | Tên người dùng từ Telegram. Nullable.                                    |
+| `last_name`  | `text`        | Họ người dùng từ Telegram. Nullable.                                     |
+| `username`   | `text`        | Username từ Telegram. Nullable.                                          |
+| `last_login` | `timestamptz` | Thời gian tương tác cuối cùng.                                            |
+| `created_at` | `timestamptz` | Thời gian tạo. Default: `now()`                                          |
+| `updated_at` | `timestamptz` | Thời gian cập nhật. Default: `now()`                                     |
+
+### 3. `food_items`
 
 Lưu trữ thông tin thực phẩm trong kho.
 
