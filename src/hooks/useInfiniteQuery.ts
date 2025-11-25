@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useMemo, useSyncExternalStore } from 'react'
 import { PostgrestQueryBuilder } from '@supabase/postgrest-js'
 import { getSupabaseClient } from '@/lib/supabaseClient'
@@ -137,6 +138,7 @@ const initialState: StoreState<any> = {
 export function useInfiniteQuery<TData = Record<string, any>>(
   props: UseInfiniteQueryProps,
 ) {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const store = useMemo(() => createStore<TData>(props), [
     props.tableName,
     props.columns,

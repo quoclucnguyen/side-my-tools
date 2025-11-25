@@ -5,11 +5,9 @@ import {
 } from '@/hooks/useInfiniteQuery'
 
 import type { FoodItem, FoodItemRow } from './types'
-import { fallbackItems } from './constants'
 import { InventoryItemCard } from './components/InventoryItemCard'
 import { EmptyInventoryAlert } from './components/EmptyInventoryAlert'
 import { LoadMoreButton } from './components/LoadMoreButton'
-import { FallbackDataAlert } from './components/FallbackDataAlert'
 import { CreateFoodDrawer } from './components/CreateFoodDrawer'
 
 export default function InventoryPage() {
@@ -47,7 +45,7 @@ export default function InventoryPage() {
 
   const shouldUseFallback =
     !error && !isLoading && !isFetching && databaseItems.length === 0
-  const items = shouldUseFallback ? fallbackItems : databaseItems
+  const items = shouldUseFallback ? [] : databaseItems
 
 
   return (
@@ -83,8 +81,6 @@ export default function InventoryPage() {
           />
         </div>
       )}
-
-      <FallbackDataAlert shouldUseFallback={shouldUseFallback} />
     </section>
   )
 }
