@@ -3,6 +3,7 @@ import {
   LayoutDashboard,
   Settings,
   UtensilsCrossed,
+  Sparkles,
   LogOut,
   User,
   type LucideIcon,
@@ -28,6 +29,7 @@ type NavItem = {
 const navItems: NavItem[] = [
   { to: '/', label: 'Tổng quan', icon: LayoutDashboard },
   { to: '/inventory', label: 'Kho thực phẩm', icon: UtensilsCrossed },
+  { to: '/cosmetics', label: 'Mỹ phẩm', icon: Sparkles },
   { to: '/settings', label: 'Cài đặt', icon: Settings },
 ]
 

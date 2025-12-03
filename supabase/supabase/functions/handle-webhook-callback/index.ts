@@ -17,14 +17,18 @@ if (!supabaseUrl || !supabaseKey) {
 const supabase = createClient(supabaseUrl || '', supabaseKey || '');
 
 // Logging helper
+interface LogPayload {
+  [key: string]: unknown;
+}
+
 const logger = {
-  info: (message: string, data?: any) => {
+  info: (message: string, data?: LogPayload) => {
     console.log(`[handle-webhook-callback] ${message}`, data ? JSON.stringify(data, null, 2) : '');
   },
-  error: (message: string, error?: any) => {
-    console.error(`[handle-webhook-callback] ERROR: ${message}`, error?.message || error);
+  error: (message: string, error?: LogPayload) => {
+    console.error(`[handle-webhook-callback] ERROR: ${message}`, error && 'message' in error ? (error as { message?: string }).message : error);
   },
-  warn: (message: string, data?: any) => {
+  warn: (message: string, data?: LogPayload) => {
     console.warn(`[handle-webhook-callback] WARNING: ${message}`, data ? JSON.stringify(data, null, 2) : '');
   }
 };
@@ -290,7 +294,7 @@ serve(async (req) => {
       }
       logger.info('Telegram notification completed');
     } catch (error) {
-      logger.error('Error in sendTelegramNotification', error);
+      logger.error('Error in sendTelegramNotification', error as Record<string, unknown>);
     }
   } else {
     logger.info('Skipping Telegram notification', {

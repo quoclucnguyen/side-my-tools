@@ -8,6 +8,7 @@ import App from "./App.tsx";
 import DashboardPage from "./pages/Dashboard.tsx";
 import SettingsPage from "./pages/Settings.tsx";
 import InventoryPage from "./pages/Inventory/Inventory.tsx";
+import CosmeticsPage from "./pages/Cosmetics/Cosmetics.tsx";
 import LoginPage from "./pages/auth/Login.tsx";
 import AuthGuard from "./components/AuthGuard.tsx";
 
@@ -44,6 +45,7 @@ const router = createMemoryRouter([
     children: [
       { index: true, element: <DashboardPage /> },
       { path: "inventory", element: <InventoryPage /> },
+      { path: "cosmetics", element: <CosmeticsPage /> },
       { path: "settings", element: <SettingsPage /> },
     ],
   },
